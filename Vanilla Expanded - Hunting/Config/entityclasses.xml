@@ -1,0 +1,100 @@
+
+<Entityclasses>
+	<!-- GIVES ITEMS WITH THE BELOW TAGS THE NEW HUNT BLEEDING EFFECT -->
+<append xpath="/entity_classes/entity_class[@name='playerMale']">
+	<effect_group>
+		<triggered_effect trigger="onSelfDamagedOther" action="AddBuff" target="other" buff="AnimalBleedBuffAttach" target_tags="deer,boar,wolf,bear,coyote,mountainlion,direWolf">
+			<requirement name="HoldingItemHasTags" tags="ranged" />
+		</triggered_effect>
+		<triggered_effect trigger="onSelfDamagedOther" action="AddBuff" target="other" buff="AnimalBleedBuffAttach" target_tags="deer,boar,wolf,bear,coyote,mountainlion,direWolf">
+			<requirement name="HoldingItemHasTags" tags="axe" />
+		</triggered_effect>
+		<triggered_effect trigger="onSelfDamagedOther" action="AddBuff" target="other" buff="AnimalBleedBuffAttach" target_tags="deer,boar,wolf,bear,coyote,mountainlion,direWolf">
+			<requirement name="HoldingItemHasTags" tags="knife" />
+		</triggered_effect>
+		<triggered_effect trigger="onSelfDamagedOther" action="AddBuff" target="other" buff="AnimalBleedBuffAttach" target_tags="deer,boar,wolf,bear,coyote,mountainlion,direWolf">
+			<requirement name="HoldingItemHasTags" tags="pick" />
+		</triggered_effect>
+	</effect_group>
+</append>
+	<!-- ATTACHES DynamicAnimalBuff TO ANIMALS -->
+<append xpath="/entity_classes/entity_class[@name='animalTemplateTimid']">
+	<effect_group>
+		<triggered_effect trigger="onSelfFirstSpawn" action="AddBuff" target="self" buff="DynamicAnimalBuff"/>
+	</effect_group>
+</append>
+<append xpath="/entity_classes/entity_class[@name='animalTemplateHostile']">
+	<effect_group>
+		<triggered_effect trigger="onSelfFirstSpawn" action="AddBuff" target="self" buff="DynamicAnimalBuff"/>
+	</effect_group>
+</append>
+<append xpath="/entity_classes/entity_class[@name='animalMountainLion']">
+	<effect_group>
+		<triggered_effect trigger="onSelfFirstSpawn" action="AddBuff" target="self" buff="DynamicAnimalBuff"/>
+	</effect_group>
+</append>
+
+<!-- REMOVES STANDARD LEATHER DROPS AND REPLACES WITH ANIMAL SPECIFIC HIDE -->
+<remove xpath="/entity_classes/entity_class[starts-with(@name, 'animal') and not(contains(@name, 'Zombie'))]/drop[@name='resourceLeather' and @tag='WasteTreasuresCompleteHarvest']" />
+<remove xpath="/entity_classes/entity_class[starts-with(@name, 'animal') and not(contains(@name, 'Zombie'))]/drop[@name='resourceLeather']" />
+<insertBefore xpath="/entity_classes/entity_class[@name='animalStag']/effect_group[@name='Base Effects']">
+	<drop event="Destroy" name="resourceHideDeer" count="1"/>
+	<drop event="Destroy" name="resourceTrophyStag" count="1"/>
+</insertBefore>
+
+<insertBefore xpath="/entity_classes/entity_class[@name='animalDoe']/effect_group[@name='Base Effects']">
+	<drop event="Destroy" name="resourceHideDeer" count="1"/>
+		<drop event="Destroy" name="resourceTrophyDoe" count="1"/>
+</insertBefore>
+<insertBefore xpath="/entity_classes/entity_class[@name='animalRabbit']/effect_group[@name='Base Effects']">
+	<drop event="Destroy" name="resourceHideRabbit" count="1"/>
+		<drop event="Destroy" name="resourceTrophyRabbit" count="1"/>
+</insertBefore>
+<insertBefore xpath="/entity_classes/entity_class[@name='animalBear']/effect_group[@name='Base Effects']">
+	<drop event="Destroy" name="resourceHideBear" count="1"/>
+		<drop event="Destroy" name="resourceTrophyBear" count="1"/>
+</insertBefore>
+<insertBefore xpath="/entity_classes/entity_class[@name='animalWolf']/effect_group[@name='Base Effects']">
+	<drop event="Destroy" name="resourceHideWolf" count="1"/>
+		<drop event="Destroy" name="resourceTrophyWolf" count="1"/>
+</insertBefore>
+<insertBefore xpath="/entity_classes/entity_class[@name='animalCoyote']/effect_group[@name='Base Effects']">
+	<drop event="Destroy" name="resourceHideCoyote" count="1"/>
+		<drop event="Destroy" name="resourceTrophyCoyote" count="1"/>
+</insertBefore>
+<insertBefore xpath="/entity_classes/entity_class[@name='animalDireWolf']/effect_group[@name='Base Effects']">
+	<drop event="Destroy" name="resourceHideDireWolf" count="1"/>
+		<drop event="Destroy" name="resourceTrophyDireWolf" count="1"/>
+</insertBefore>
+<insertBefore xpath="/entity_classes/entity_class[@name='animalMountainLion']/property[@name='NavObject']">
+	<drop event="Destroy" name="resourceHideMountainLion" count="1"/>
+		<drop event="Destroy" name="resourceTrophyMountainLion" count="1"/>
+</insertBefore>
+<insertBefore xpath="/entity_classes/entity_class[@name='animalSnake']/effect_group[@name='Base Effects']">
+	<drop event="Destroy" name="resourceHideSnake" count="1"/>
+		<drop event="Destroy" name="resourceTrophySnake" count="1"/>
+</insertBefore>
+<insertBefore xpath="/entity_classes/entity_class[@name='animalBoar']/effect_group[@name='Base Effects']">
+	<drop event="Destroy" name="resourceHideBoar" count="1"/>
+		<drop event="Destroy" name="resourceTrophyBoar" count="1"/>
+</insertBefore>
+
+<!-- ATTACHES ANIMAL RESOURCE PRICE SPECIFICITIES -->
+<append xpath="entity_classes/entity_class[@name='npcTraderRekt']">
+<property name="Buffs" value="huntingPriceRektAOE"/>
+</append>
+<append xpath="entity_classes/entity_class[@name='npcTraderJen']">
+<property name="Buffs" value="huntingPriceJenAOE"/>
+</append>
+<append xpath="entity_classes/entity_class[@name='npcTraderJoel']">
+<property name="Buffs" value="huntingPriceJoelAOE"/>
+</append>
+<append xpath="entity_classes/entity_class[@name='npcTraderHugh']">
+<property name="Buffs" value="huntingPriceHughAOE"/>
+</append>
+<append xpath="entity_classes/entity_class[@name='npcTraderBob']">
+<property name="Buffs" value="huntingPriceBobAOE"/>
+</append>
+
+
+</Entityclasses>

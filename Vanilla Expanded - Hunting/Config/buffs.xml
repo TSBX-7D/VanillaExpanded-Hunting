@@ -1,0 +1,182 @@
+<Buffs>
+	<append xpath="/buffs">
+		<!-- If Animal health is less than 125hp, it set their health to 125hp (minus Chicken, Rabbit, Snake) -->
+		<buff name="AnimalHPIncrBuff"><stack_type value="replace"/><duration value="0"/>
+			<effect_group name="Random Roll HPSetting">	
+				<requirement name="!EntityTagCompare" tags="chicken,rabbit,snake"/>
+				<passive_effect name="HealthMax" operation="base_set" value="125"/>	
+				<passive_effect name="HealthChangeOT" operation="base_add" value="125" duration="2"/>
+			</effect_group>
+		</buff>
+
+	</append>
+	<!-- Removes Vanilla bleeding buffs and attaches the new Blood Trail effect-->
+	<append xpath="/buffs">
+		<buff name="AnimalBleedBuffAttach"><stack_type value="replace"/><damage_type value="bloodloss"/><duration value="180"/><update_rate value="1"/>
+			<effect_group name="BleedStart">
+				<triggered_effect trigger="onSelfBuffStart" action="RemoveBuff" buff="buffInjuryBleeding"/>
+				<triggered_effect trigger="onSelfBuffStart" action="AddBuff" buff="BleedDamage"/>
+				<triggered_effect trigger="onSelfBuffUpdate" action="RemoveBuff" buff="buffInjuryBleeding"/>
+				<triggered_effect trigger="onSelfBuffUpdate" action="RemoveBuff" buff="buffInjuryBleedingParticle"/>
+			</effect_group>
+
+			<effect_group name="BloodTrailParticleAttach">
+				<triggered_effect trigger="onSelfBuffStart" action="AttachPrefabToEntity" parent_transform="Hips" local_offset="0,0,0" local_rotation="180" prefab="#@modfolder:Resources/bloodTrail.unity3d?bloodTrail"/>	
+				<triggered_effect trigger="onSelfBuffFinish" action="RemovePrefabFromEntity" prefab="bloodTrail"/>
+			</effect_group>
+
+		</buff>
+	</append>
+	<append xpath="buffs">
+		<buff name="BleedDamage"><stack_type value="replace"/><damage_type value="bloodloss"/><duration value="120"/><update_rate value="2"/>
+			<effect_group name="BleedDamage">
+				<triggered_effect trigger="onSelfBuffUpdate" action="ModifyStats" stat="Health" operation="subtract" value="3">
+					<requirement name="EntityTagCompare" tags="animal"/>
+				</triggered_effect>
+				<triggered_effect trigger="onSelfBuffUpdate" action="PlaySound" target="self" sound="boarpain" tags="boar">
+					<requirement name="EntityTagCompare" tags="boar"/>
+				</triggered_effect>
+				<triggered_effect trigger="onSelfBuffUpdate" action="PlaySound" target="self" sound="stagpain" tags="deer">
+					<requirement name="EntityTagCompare" tags="deer"/>
+				</triggered_effect>
+				<triggered_effect trigger="onSelfBuffUpdate" action="PlaySound" target="self" sound="wolfpain" tags="wolf">
+					<requirement name="EntityTagCompare" tags="wolf,direWolf"/>
+				</triggered_effect>
+				<triggered_effect trigger="onSelfBuffUpdate" action="PlaySound" target="self" sound="bearpain" tags="bear">
+					<requirement name="EntityTagCompare" tags="bear"/>
+				</triggered_effect>	
+				<triggered_effect trigger="onSelfBuffUpdate" action="PlaySound" target="self" sound="wolfpain" tags="coyote">
+					<requirement name="EntityTagCompare" tags="coyote"/>
+				</triggered_effect>	
+				<triggered_effect trigger="onSelfBuffUpdate" action="PlaySound" target="self" sound="mlionpain" tags="mountainlion">
+					<requirement name="EntityTagCompare" tags="mountainlion"/>
+				</triggered_effect>	
+			</effect_group>
+		</buff>
+	</append>
+	<!-- Tracks animal health levels and adjustes their speed and damage -->
+	<append xpath="/buffs">
+		<buff name="DynamicAnimalBuff"><stack_type value="replace"/><duration value="0"/>
+			<effect_group name="HPIncrBuff">
+				<triggered_effect trigger="onSelfBuffStart" action="AddBuff" target="self" buff="AnimalHPIncrBuff">
+					<requirement name="StatCompareMax" stat="health" operation="LT" value="125"/>
+				</triggered_effect>
+			</effect_group>
+			<effect_group name="Stage1" >
+				<requirement name="StatComparePercCurrentToMax" stat="health" operation="LTE" value="0.8"/>
+				<passive_effect name="RunSpeed" operation="base_subtract" value="0.05"/>
+				<passive_effect name="WalkSpeed" operation="base_subtract" value="0.2"/>
+				<passive_effect name="DamageModifier" operation="perc_set" value="1" />
+			</effect_group>
+			<effect_group name="Stage2" >
+				<requirement name="StatComparePercCurrentToMax" stat="health" operation="LTE" value="0.6"/>
+				<passive_effect name="RunSpeed" operation="base_subtract" value="0.1"/>
+				<passive_effect name="WalkSpeed" operation="base_subtract" value="0.2"/>
+				<passive_effect name="DamageModifier" operation="perc_set" value="0.75" />
+			</effect_group>
+			<effect_group name="Stage3" >
+				<requirement name="StatComparePercCurrentToMax" stat="health" operation="LTE" value="0.4"/>
+				<passive_effect name="RunSpeed" operation="base_subtract" value="0.2"/>
+				<passive_effect name="WalkSpeed" operation="base_subtract" value="0.2"/>
+				<passive_effect name="DamageModifier" operation="perc_set" value="0.5" />
+			</effect_group>
+			<effect_group name="Stage4" >
+				<requirement name="StatComparePercCurrentToMax" stat="health" operation="LTE" value="0.2"/>
+				<passive_effect name="RunSpeed" operation="base_subtract" value="0.25"/>
+				<passive_effect name="WalkSpeed" operation="base_subtract" value="0.1"/>
+				<passive_effect name="DamageModifier" operation="perc_set" value="0.4" />
+			</effect_group>
+			<effect_group name="Stage5" >
+				<requirement name="StatComparePercCurrentToMax" stat="health" operation="LTE" value="0.1"/>
+				<passive_effect name="RunSpeed" operation="base_subtract" value="0.4"/>
+				<passive_effect name="WalkSpeed" operation="base_subtract" value="0.1"/>
+				<passive_effect name="DamageModifier" operation="perc_set" value="0.3" />
+			</effect_group>
+		</buff>
+
+		<!-- TRADER PRICE BUFFS -->
+		<buff name="huntingPriceRektAOE">
+			<stack_type value="replace"/>
+			<update_rate value="1"/>
+			<duration value="0"/>
+			<effect_group>
+				<triggered_effect trigger="onSelfBuffUpdate" action="AddBuff" target="selfAOE" range="5" buff="huntingPriceRekt" target_tags="player"/>
+			</effect_group>
+		</buff>
+		<buff name="huntingPriceJenAOE">
+			<stack_type value="replace"/>
+			<update_rate value="1"/>
+			<duration value="0"/>
+			<effect_group>
+				<triggered_effect trigger="onSelfBuffUpdate" action="AddBuff" target="selfAOE" range="5" buff="huntingPriceJen" target_tags="player"/>
+			</effect_group>
+		</buff>
+		<buff name="huntingPriceJoelAOE">
+			<stack_type value="replace"/>
+			<update_rate value="1"/>
+			<duration value="0"/>
+			<effect_group>
+				<triggered_effect trigger="onSelfBuffUpdate" action="AddBuff" target="selfAOE" range="5" buff="huntingPriceJoel" target_tags="player"/>
+			</effect_group>
+		</buff>
+		<buff name="huntingPriceHughAOE">
+			<stack_type value="replace"/>
+			<update_rate value="1"/>
+			<duration value="0"/>
+			<effect_group>
+				<triggered_effect trigger="onSelfBuffUpdate" action="AddBuff" target="selfAOE" range="5" buff="huntingPriceHugh" target_tags="player"/>
+			</effect_group>
+		</buff>
+		<buff name="huntingPriceBobAOE">
+			<stack_type value="replace"/>
+			<update_rate value="1"/>
+			<duration value="0"/>
+			<effect_group>
+				<triggered_effect trigger="onSelfBuffUpdate" action="AddBuff" target="selfAOE" range="5" buff="huntingPriceBob" target_tags="player"/>
+			</effect_group>
+		</buff>
+		<!-- PRICE BUFF EFFECTS -->
+		<buff name="huntingPriceRekt" hidden="true" remove_on_death="true">
+			<update_rate value="1"/>
+			<duration value="15"/><!-- 300 -->
+			<effect_group>
+				<passive_effect name="EconomicValue" operation="base_add"  value="300" tags="coyote,snake" />
+				<!-- <passive_effect name="BarteringSelling" operation="base_add"  value="100" tag="coyote"/> -->
+			</effect_group>
+		</buff>
+		<buff name="huntingPriceJen" hidden="true" remove_on_death="true">
+			<update_rate value="1"/>
+			<duration value="15"/><!-- 300 -->
+			<effect_group>
+				<passive_effect name="EconomicValue" operation="base_add"  value="300" tags="boar,mountainlion" />
+				<!-- <passive_effect name="BarteringSelling" operation="base_add"  value="100" tag="coyote"/> -->
+			</effect_group>
+		</buff>
+		<buff name="huntingPriceJoel" hidden="true" remove_on_death="true">
+			<update_rate value="1"/>
+			<duration value="15"/><!-- 300 -->
+			<effect_group>
+				<passive_effect name="EconomicValue" operation="base_add"  value="300" tags="deer" />
+				<!-- <passive_effect name="BarteringSelling" operation="base_add"  value="100" tag="coyote"/> -->
+			</effect_group>
+		</buff>
+		<buff name="huntingPriceHugh" hidden="true" remove_on_death="true">
+			<update_rate value="1"/>
+			<duration value="15"/><!-- 300 -->
+			<effect_group>
+				<passive_effect name="EconomicValue" operation="base_add"  value="300" tags="wolf,direwolf" />
+				<!-- <passive_effect name="BarteringSelling" operation="base_add"  value="100" tag="coyote"/> -->
+			</effect_group>
+		</buff>
+		<buff name="huntingPriceBob" hidden="true" remove_on_death="true">
+			<update_rate value="1"/>
+			<duration value="15"/><!-- 300 -->
+			<effect_group>
+				<passive_effect name="EconomicValue" operation="base_add"  value="300" tags="bear,rabbit" />
+				<!-- <passive_effect name="BarteringSelling" operation="base_add"  value="100" tag="coyote"/> -->
+			</effect_group>
+
+		</buff>
+
+	</append>
+</Buffs>

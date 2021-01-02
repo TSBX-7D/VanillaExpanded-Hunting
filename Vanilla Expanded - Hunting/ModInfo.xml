@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<xml>
+	<ModInfo>
+		<Name value="Vanilla Expanded - Hunting" />
+		<Description value="Hurt prey now bleeds, slowing them over time and leaving a trail for the observant hunter to follow. Once you've killed your prey, take it's unique trophy and hide to a specific trader to sell. "
+		/>
+		<Author value="TSBX" />
+		<Version value="1.0.0" />
+		<Website value="https://community.7daystodie.com/topic/22524-vanilla-expanded-a-mod-series/"/>
+	</ModInfo>
+</xml>
